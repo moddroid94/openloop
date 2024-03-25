@@ -1,6 +1,7 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import Image from 'next/image'
-
+import { Button } from "@/components/ui/button"
+import { IoPlayOutline, IoPlay } from "react-icons/io5";
 import {
   Table,
   TableBody,
@@ -29,7 +30,7 @@ export default async function Home() {
         <Table className=" flex flex-col overflow-scroll">
           <TableHeader className="flex flex-row w-full h-14">
             <TableRow className="flex flex-row w-full items-center shadow-md divide-x">
-              <TableHead className="flex flex-col w-14 h-6 pl-3
+              <TableHead className="flex flex-col w-24 h-6 pl-3
                                     font-bold">
                                     Pack
               </TableHead>
@@ -46,13 +47,19 @@ export default async function Home() {
           <TableBody className="flex flex-col w-full">
             {data.map((sample) => 
               <TableRow key={sample.id} className="flex flex-row w-full items-center ">
-                <TableCell className="flex flex-col w-14 overflow-clip shrink-0 p-0 pl-3">
-                  <Image 
-                    className="rounded-full"
-                    src={sample.pack.cover}
-                    width={32}
-                    height={32}
-                  />
+                <TableCell className="flex flex-col w-24 overflow-clip shrink-0 p-0 pl-3">
+                  <div className="flex flex-row justify-around py-2">
+                    <Image 
+                      className="flex rounded-full size-8 self-center"
+                      src={sample.pack.cover}
+                      width={32}
+                      height={32}
+                    />
+                    <Button className="group transition-all flex size-8 p-0 hover:ring-1 hover:bg-gray-200" variant="ghost">
+                      <IoPlayOutline className="size-7 group-hover:hidden"/>
+                      <IoPlay className="hidden size-7 group-hover:block"/>
+                    </Button>
+                  </div>
                 </TableCell>
                 <TableCell className="flex flex-col basis-2/5 shrink-0 
                                       font-medium">
