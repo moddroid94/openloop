@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from pathlib import Path
+from taggit.managers import TaggableManager
 import logging
 
 
@@ -26,6 +27,7 @@ class Pack(models.Model):
     name = models.CharField(max_length=100, unique=True)
     author = models.CharField(max_length=100)
     cover = models.ImageField(upload_to=get_img_save_path)
+    tags = TaggableManager()
 
     def __str__(self):
         return f"{self.name}"
@@ -43,6 +45,7 @@ class Sample(models.Model):
     category = models.CharField(max_length=3, choices=categories) # type: ignore
     file = models.FileField(upload_to=get_save_path)
     name = models.CharField(max_length=100, blank=True)
+    tags = TaggableManager()
 
     class Meta:
         ordering = ["name", "pack", "category"]

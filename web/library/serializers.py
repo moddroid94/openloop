@@ -1,9 +1,11 @@
 from rest_framework import serializers
+from taggit.serializers import (TagListSerializerField,
+                                TaggitSerializer)
 from .models import Sample, Pack
 
 
 class SampleSerializer(serializers.ModelSerializer):
-
+    tags = TagListSerializerField()
     category_name = serializers.SerializerMethodField()
 
     def get_category_name(self, obj):

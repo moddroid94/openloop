@@ -7,7 +7,7 @@ async function getData(): Promise<Sample[]> {
     return res.json()
 }
 
-export default async function DemoPage() {
+export default async function Samples() {
   const data = await getData()
 
   return (

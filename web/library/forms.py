@@ -29,7 +29,7 @@ class PackForm(forms.ModelForm):
     melodies = MultipleFileField()
     vocals = MultipleFileField()
     sfxs = MultipleFileField()
-    ambients = MultipleFileField()
+    ambiences = MultipleFileField()
 
     class Meta:
         model = Pack

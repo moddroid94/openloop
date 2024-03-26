@@ -35,14 +35,14 @@ export function DataTable<TData, TValue>({
     2: 'w-auto'
    }
   return (
-    <div className="w-full rounded-md border">
+    <div className="w-full rounded-md pl-1">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead className={ "px-2 " + whead[header.getSize()] } key={header.id}>
+                  <TableHead className={ "px-1 " + whead[header.getSize()] } key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -59,6 +59,7 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
+                className="h-11"
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
