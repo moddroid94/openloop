@@ -73,7 +73,7 @@ export const columns: ColumnDef<Sample>[] = [
     minSize: 1,
     size: 1, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({row}) => {
-      return <button className="relative group transition flex size-7 rounded-full p-1 ml-2 hover:ring-1 hover:ring-black">
+      return <button className="relative group transition flex size-7 rounded-full p-1 hover:ring-1 hover:ring-black">
         <IoPlayOutline className="transition absolute top-0 left-0 m-1 translate-x-[1px] size-5 scale-90 group-hover:opacity-0"/>
         <IoPlay className="transition absolute top-0 left-0 m-1 translate-x-[1px] scale-0 size-5 group-hover:scale-100"/>
       </button>
@@ -81,22 +81,22 @@ export const columns: ColumnDef<Sample>[] = [
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: () => <div className="flex font-bold my-auto">Name</div>,
     minSize: 1,
     size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
-    cell: ({ row }) => <div className="font-bold">{row.getValue("name")}</div>
+    cell: ({ row }) => <div className="flex font-bold">{row.getValue("name")}</div>
 
   },
   {
     accessorKey: "tags",
-    header: "Tags",
+    header: () => <div className="flex font-bold my-auto">Tags</div>,
     minSize: 1,
     size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({ row }) => row.getValue("tags").toString().split(",").map(function(item) {
       if (item) {
         item = "#" + item
         return (
-          <div className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">{item}</div>
+          <div key={item} className="inline-flex items-center rounded-md bg-green-50 px-1.5 py-0.5 text-[11px] font-medium text-green-700 ring-1 ring-inset ring-green-600/20">{item}</div>
         )
       } else {
         return
@@ -107,13 +107,13 @@ export const columns: ColumnDef<Sample>[] = [
   },
   {
     accessorKey: "category_name",
-    header: "Category",
+    header: () => <div className="flex font-bold my-auto">Category</div>,
     minSize: 1,
     size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
   },
   {
     accessorKey: "pack",
-    header: "Pack",
+    header: () => <div className="flex font-bold my-auto">Pack</div>,
     minSize: 1,
     size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({row}) => row.getValue("pack")["name"]
@@ -143,7 +143,7 @@ export const columns: ColumnDef<Sample>[] = [
               Copy url
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>placeholder</DropdownMenuItem>
+            <DropdownMenuItem>Download Sample</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

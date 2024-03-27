@@ -20,7 +20,7 @@ import {
 export default function Header() {
     return(
         <header className="fixed top-0 left-0 z-50 w-full">
-            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-900 shadow-md h-16">
+            <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-900 drop-shadow h-16">
                 <div className="flex flex-wrap justify-between items-center">
                     <Sheet>
                       <SheetTrigger asChild className="flex justify-start items-center sm:hidden">

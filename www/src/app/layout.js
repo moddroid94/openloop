@@ -13,10 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="flex antialiased h-screen w-screen overflow-x-hidden">
         <Header />
         <Sidebar />
-        <main>{children}</main>
+        <main className="flex absolute sm:left-[20%] sm:w-4/5 w-full ">{children}</main>
       </body>
     </html>
   );
