@@ -44,6 +44,7 @@ export function getTags(row) {
   });
   return tagsfield
 }
+
 export const columns: ColumnDef<Sample>[] = [
   // Display Column
   columnHelper.display({
@@ -105,7 +106,7 @@ export const columns: ColumnDef<Sample>[] = [
         const minutes = Math.floor(time / 60)
         const seconds = time % 60
         const ftime = minutes + ":" + seconds.toString().padStart(2, "0")
-        return ftime
+        return <span className="items-center self-center px-1 py-0.5">{ftime}</span>
       }
       else {
         return

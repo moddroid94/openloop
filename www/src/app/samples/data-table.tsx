@@ -16,9 +16,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useState } from "react"
+import { MouseEventHandler, useState } from "react"
 import { Button } from "@/components/ui/button"
 import React from "react"
+import { usePathname, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 
 export function DataTable({
@@ -26,9 +28,10 @@ export function DataTable({
   initialData,
   paginate,
 }) {
+  const searchParams = useSearchParams()
   const [data, setData] = useState(initialData)
-  
-
+  const router = useRouter()
+  const pathname = usePathname()
   const table = useReactTable({
     data,
     columns,
@@ -50,21 +53,21 @@ export function DataTable({
   function getCellClass(headersize: string) {
     switch (headersize){
       case 'image':
-        return 'basis-12 shrink-0'
+        return 'basis-12 shrink-0 grow-0'
       case 'file':
-        return 'basis-11 shrink-0'
+        return 'basis-12 shrink-0 grow-0'
       case 'name':
-        return 'w-32 grow shrink-0 truncate '
+        return 'w-48 grow shrink-0 truncate '
       case 'tags':
-        return 'basis-2/12 '
+        return 'flex-row gap-2 w-24 grow shrink-0'
       case 'duration':
-        return 'basis-12 shrink-0'
+        return 'basis-14 shrink-0'
       case 'category':
-        return 'w-24 shrink truncate'
+        return 'w-36 shrink truncate transition hidden sm:flex'
       case 'pack':
-        return 'w-24 shrink truncate'
+        return 'w-48 shrink truncate transition hidden sm:flex'
       case 'actions':
-        return 'basis-12 grow items-end'
+        return 'basis-12 items-end'
     }
     }
   
@@ -81,15 +84,29 @@ export function DataTable({
     })
   }
 
+  function OrderBy(id) {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('ordering', id)
+    const page = fetch('/samples/api?' + params.toString())
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data.results)
+        var myDiv = document.getElementById('scrollarea');
+        myDiv.scroll({ top: 0, behavior: 'smooth' });
+      })
+    return params.toString()
+  }
   return (
-  <div className="flex relative w-full h-full p-1">
+  <div className="flex relative w-full h-full">
     <Table className="flex">
-      <TableHeader className="transition-all flex fixed right-0 top-16 z-10 rounded-md w-full sm:w-4/5 p-2">
+      <TableHeader className="transition-all flex fixed right-0 top-16 z-10 rounded-md w-full sm:w-4/5 p-2 ">
         {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow className="flex flex-row items-mide justify-start w-full bg-white border border-black rounded-md shadow-lg" key={headerGroup.id}>
+          <TableRow className="flex flex-row items-mide justify-start w-full bg-white border border-black rounded-md shadow-lg overflow-clip" key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               return (
-                <TableHead className={ "flex flex-col self-center px-1 " + getCellClass(header.id) } key={header.id}>
+                <TableHead className={ "flex flex-col self-center px-2 " + getCellClass(header.id) } 
+                  key={header.id} 
+                  onClick={() => {router.push(pathname + '?' + OrderBy(header.id))}}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
