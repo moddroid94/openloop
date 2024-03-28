@@ -1,17 +1,14 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { IoPlayOutline, IoPlay } from "react-icons/io5";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Separator } from "@/components/ui/separator"
 
 
 async function getData() {
@@ -20,7 +17,7 @@ async function getData() {
   return res.json()
 }
 
-export default async function Home() {
+export default async function Home(): Promise<JSX.Element> {
   
   const data = await getData()
 
@@ -54,6 +51,7 @@ export default async function Home() {
                       src={sample.pack.cover}
                       width={32}
                       height={32}
+                      alt=""
                     />
                     <Button className="group transition-all flex size-8 p-0 hover:ring-1 hover:bg-gray-200" variant="ghost">
                       <IoPlayOutline className="size-7 group-hover:hidden"/>
