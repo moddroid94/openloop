@@ -1,6 +1,6 @@
-import { type NextRequest } from 'next/server'
+import {  type NextRequest } from 'next/server'
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<Response> {
   const searchParams = request.nextUrl.searchParams
   const query = searchParams.get('page')
   const res = await fetch('http://127.0.0.1:8000/api/sample?page=' + query)
