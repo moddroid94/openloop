@@ -30,7 +30,8 @@ export type Sample = {
   file: string
   name: string
   pack: Pack
-  category_name: string
+  category: string
+  duration: number
   tags: Array<string>
 }
 
@@ -106,7 +107,25 @@ export const columns: ColumnDef<Sample>[] = [
 
   },
   {
-    accessorKey: "category_name",
+    accessorKey: "duration",
+    header: () => <div className="flex font-bold my-auto">Time</div>,
+    minSize: 1,
+    size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
+    cell: ({row}) => {
+      const time = parseInt(row.getValue("duration"))
+      if (time) {
+        const minutes = Math.floor(time / 60)
+        const seconds = time % 60
+        const ftime = minutes + ":" + seconds.toString().padStart(2, "0")
+        return ftime
+      }
+      else {
+        return
+      }
+    }
+  },
+  {
+    accessorKey: "category",
     header: () => <div className="flex font-bold my-auto">Category</div>,
     minSize: 1,
     size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto

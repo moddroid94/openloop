@@ -71,19 +71,7 @@ export default function Header() {
                     <a href="/sample" className="flex mr-4">
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">LoopShare</span>
                         </a>
-                    <div className="flex justify-start items-center">
-                        <form action="" method="GET" className="flex hidden lg:block lg:pl-8">
-                        <label htmlFor="topbar-search" className="sr-only">Search</label>
-                        <div className="relative ml-16 mt-1 lg:w-96 ">
-                            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
-                            </svg>
-                            </div>
-                            <input type="text" name="search" id="topbar-search" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search"></input>
-                        </div>
-                        </form>
-                    </div>
+
                     <div className="flex items-center lg:order-2">
                         <button type="button" className="hidden sm:inline-flex items-center justify-center text-white bg-gray-600 hover:bg-slate-700 hover:ring-2 hover:ring-indigo-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none">
                         <svg aria-hidden="true" className="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

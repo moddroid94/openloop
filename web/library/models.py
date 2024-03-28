@@ -1,12 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 from pathlib import Path
 from taggit.managers import TaggableManager
+import mutagen
 import logging
 
 
 logger = logging.getLogger(__name__)
-# Create your models here.
+
 
 
 def get_save_path(instance, filename):
@@ -35,16 +38,23 @@ class Pack(models.Model):
 
 class Sample(models.Model):
     class categories(models.TextChoices):
-        DRUMS = "DR", _("Drums")
-        MELODIES = "ML", _("Melodies")
-        VOCALS = "VL", _("Vocals")
-        SFXS = "FX", _("Sfxs")
-        AMBIENCES = "AB", _("Ambiences")
+        DRUMS = "drums", _("Drums")
+        MELODIES = "melodies", _("Melodies")
+        VOCALS = "vocals", _("Vocals")
+        SFXS = "sfxs", _("Sfxs")
+        AMBIENCES = "ambiences", _("Ambiences")
 
+
+    # fields
     pack = models.ForeignKey(Pack, on_delete=models.CASCADE, related_name="samples", to_field="name")
-    category = models.CharField(max_length=3, choices=categories) # type: ignore
+    category = models.CharField(max_length=20, choices=categories) # type: ignore
     file = models.FileField(upload_to=get_save_path)
+
+    # composite values
+    duration = models.PositiveIntegerField(blank=True, null=True)
     name = models.CharField(max_length=100, blank=True)
+
+    # tags
     tags = TaggableManager()
 
     class Meta:
@@ -54,6 +64,26 @@ class Sample(models.Model):
         return f"{self.file}"
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.name = Path(self.file.url).name
+        # if not self.pk:
+        #     self.name = Path(self.file.url).name
+        #     update_fields = None
+        # else:
+        #     update_fields = True
         super().save(*args, **kwargs)
+
+
+@receiver(pre_save, sender=Sample)
+def set_composite_values(sender, instance, **kwargs):
+    try:
+        obj = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExists:
+        instance.name = Path(instance.file.url).name
+        audio_info = mutagen.File(instance.file)
+        instance.duration = round(audio_info.info.length)
+    else:
+        if not obj.file == instance.file:
+            instance.name = Path(instance.file.url).name
+            audio_info = mutagen.File(instance.file)
+            logger.warning(audio_info.info.length)
+            instance.duration = round(audio_info.info.length)
+    

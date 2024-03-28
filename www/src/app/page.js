@@ -67,7 +67,7 @@ export default async function Home() {
                 </TableCell>
                 <TableCell className="flex flex-col basis-16">0:00</TableCell>
                 <TableCell className="flex flex-col basis-1/5">{sample.pack.name}</TableCell>
-                <TableCell className="flex flex-col basis-1/5">{sample.category_name}</TableCell>
+                <TableCell className="flex flex-col basis-1/5">{sample.category}</TableCell>
                 
               </TableRow>
             )}
