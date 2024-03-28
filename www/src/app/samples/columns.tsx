@@ -48,8 +48,6 @@ export const columns: ColumnDef<Sample>[] = [
   // Display Column
   columnHelper.display({
     id: 'image',
-    minSize: 1,
-    size: 1, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     header: "",
     cell: props => {
       const image= props.row.original.pack.cover
@@ -71,8 +69,6 @@ export const columns: ColumnDef<Sample>[] = [
   {
     accessorKey: "file",
     header: "",
-    minSize: 1,
-    size: 1, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({row}) => {
       return <button className="relative group transition flex size-7 rounded-full p-1 hover:ring-1 hover:ring-black">
         <IoPlayOutline className="transition absolute top-0 left-0 m-1 translate-x-[1px] size-5 scale-90 group-hover:opacity-0"/>
@@ -83,16 +79,11 @@ export const columns: ColumnDef<Sample>[] = [
   {
     accessorKey: "name",
     header: () => <div className="flex font-bold my-auto">Name</div>,
-    minSize: 1,
-    size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({ row }) => <div className="flex font-bold">{row.getValue("name")}</div>
-
   },
   {
     accessorKey: "tags",
     header: () => <div className="flex font-bold my-auto">Tags</div>,
-    minSize: 1,
-    size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({ row }) => row.getValue("tags").toString().split(",").map(function(item) {
       if (item) {
         item = "#" + item
@@ -104,13 +95,10 @@ export const columns: ColumnDef<Sample>[] = [
       }
       
     })
-
   },
   {
     accessorKey: "duration",
     header: () => <div className="flex font-bold my-auto">Time</div>,
-    minSize: 1,
-    size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({row}) => {
       const time = parseInt(row.getValue("duration"))
       if (time) {
@@ -127,20 +115,14 @@ export const columns: ColumnDef<Sample>[] = [
   {
     accessorKey: "category",
     header: () => <div className="flex font-bold my-auto">Category</div>,
-    minSize: 1,
-    size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
   },
   {
     accessorKey: "pack",
     header: () => <div className="flex font-bold my-auto">Pack</div>,
-    minSize: 1,
-    size: 2, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     cell: ({row}) => row.getValue("pack")["name"]
   },
   columnHelper.display({
     id: 'actions',
-    minSize: 1,
-    size: 1, //uses custom TailwindCSS w-[value] format 1=10/2=auto
     header: "",
     cell: props => {
       const data = props.row.original
@@ -148,7 +130,7 @@ export const columns: ColumnDef<Sample>[] = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="justify-self-end h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>

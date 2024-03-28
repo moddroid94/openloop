@@ -27,6 +27,7 @@ export function DataTable({
   paginate,
 }) {
   const [data, setData] = useState(initialData)
+  
 
   const table = useReactTable({
     data,
@@ -36,27 +37,39 @@ export function DataTable({
     rowCount: paginate.count,
     autoResetPageIndex: false,
   })
-   const whead = {
-    1: 'w-1/5',
-    2: 'w-full'
-   }
 
-   const [state, setState] = React.useState(table.initialState)
+  const [state, setState] = React.useState(table.initialState)
 
-   // Override the state managers for the table to your own
-   table.setOptions(prev => ({
-     ...prev,
-     state,
-     onStateChange: setState,
-     // These are just table options, so if things
-     // need to change based on your state, you can
-     // derive them here
- 
+  // Override the state managers
+  table.setOptions(prev => ({
+    ...prev,
+    state,
+    onStateChange: setState,
+  }))
 
+  function getCellClass(headersize: string) {
+    switch (headersize){
+      case 'image':
+        return 'basis-12 shrink-0'
+      case 'file':
+        return 'basis-11 shrink-0'
+      case 'name':
+        return 'w-32 grow shrink-0 truncate '
+      case 'tags':
+        return 'basis-2/12 '
+      case 'duration':
+        return 'basis-12 shrink-0'
+      case 'category':
+        return 'w-24 shrink truncate'
+      case 'pack':
+        return 'w-24 shrink truncate'
+      case 'actions':
+        return 'basis-12 grow items-end'
+    }
+    }
+  
 
-   }))
-
-   function changePage(index = 0) {
+  function changePage(index = 0) {
     const page = fetch('/samples/api?page=' + index)
     .then((res) => res.json())
     .then((data) => {
@@ -66,17 +79,17 @@ export function DataTable({
       myDiv.scroll({ top: 0, behavior: 'smooth' });
       
     })
-   }
+  }
 
   return (
   <div className="flex relative w-full h-full p-1">
-    <Table className="flex w-full ">
-      <TableHeader className="flex fixed top-16 z-10 m-2 pr-[42px] rounded-md w-4/5 ">
+    <Table className="flex">
+      <TableHeader className="transition-all flex fixed right-0 top-16 z-10 rounded-md w-full sm:w-4/5 p-2">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow className="flex flex-row items-mide justify-start w-full bg-white border border-black rounded-md shadow-lg" key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               return (
-                <TableHead className={ "flex flex-col self-center px-1 " + whead[header.getSize()] } key={header.id}>
+                <TableHead className={ "flex flex-col self-center px-1 " + getCellClass(header.id) } key={header.id}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -89,7 +102,7 @@ export function DataTable({
           </TableRow>
         ))}
       </TableHeader>
-      <TableBody id="scrollarea" className="flex flex-col z-0 w-full h-screen pt-16 overflow-auto">
+      <TableBody id="scrollarea" className="flex flex-col z-0 w-full h-screen pt-16 overflow-auto px-2">
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
             <TableRow
@@ -99,7 +112,7 @@ export function DataTable({
               data-state={row.getIsSelected() && "selected"}
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className={ "p-2 flex flex-col " + whead[cell.column.columnDef.size] }>
+                <TableCell key={cell.id} className={ "p-2 flex flex-col " + getCellClass(cell.column.id) }>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

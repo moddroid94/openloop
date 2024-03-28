@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
       <body className="flex antialiased h-screen w-screen overflow-x-hidden">
         <Header />
         <Sidebar />
-        <main className="flex absolute sm:left-[20%] sm:w-4/5 w-full ">{children}</main>
+        <main className="flex absolute right-0 sm:w-4/5 w-full transition-all">{children}</main>
       </body>
     </html>
   );

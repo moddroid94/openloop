@@ -11,7 +11,7 @@ export default async function Samples() {
   const data = await getData()
 
   return (
-    <div className="flex transition-all pt-16 overflow-hidden w-full h-screen">
+    <div className="flex transition pt-16 overflow-hidden w-full h-screen">
       <DataTable columns={columns} initialData={data.results} paginate={data} />
     </div>
   )
