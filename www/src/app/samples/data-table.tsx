@@ -55,47 +55,67 @@ export function DataTable({
      * get extra style classes dinamically
      * id: name of the header
      */
+    var classname = ''
+    // add dimension and flex properties to all
+    switch (id){
+      case 'image':
+        classname = 'basis-12 shrink-0 grow-0'
+        break;
+      case 'file':
+        classname = 'basis-12 shrink-0 grow-0'
+        break;
+      case 'name':
+        classname = 'w-48 grow shrink-0 truncate'
+        break;
+      case 'tags':
+        classname = 'flex-row gap-2 w-24 grow shrink-0'
+        break;
+      case 'duration':
+        classname = 'basis-[70px] shrink-0'
+        break;
+      case 'category':
+        classname = 'w-36 shrink truncate transition hidden sm:flex'
+        break;
+      case 'pack':
+        classname = 'w-48 shrink truncate transition hidden sm:flex'
+        break;
+      case 'actions':
+        classname = 'basis-12 items-end'
+        break;
+    }
+
+    // add header specific rules for pointer events 
     if (isheader == true) {
       switch (id){
         case 'image':
-          return 'basis-12 shrink-0 grow-0 pointer-events-none'
+          classname = classname + 'basis-12 shrink-0 grow-0 pointer-events-none'
+          break;
         case 'file':
-          return 'basis-12 shrink-0 grow-0 pointer-events-none'
+          classname = classname + 'basis-12 shrink-0 grow-0 pointer-events-none'
+          break;
         case 'name':
-          return 'w-48 grow shrink-0 truncate pointer-events-auto'
+          classname = classname + 'w-48 grow shrink-0 truncate pointer-events-auto'
+          break;
         case 'tags':
-          return 'flex-row gap-2 w-24 grow shrink-0 pointer-events-auto'
+          classname = classname + 'flex-row gap-2 w-24 grow shrink-0 pointer-events-auto'
+          break;
         case 'duration':
-          return 'basis-14 shrink-0 pointer-events-auto'
+          classname = classname + 'basis-14 shrink-0 pointer-events-auto'
+          break;
         case 'category':
-          return 'w-36 shrink truncate transition hidden sm:flex pointer-events-auto'
+          classname = classname + 'w-36 shrink truncate transition hidden sm:flex pointer-events-auto'
+          break;
         case 'pack':
-          return 'w-48 shrink truncate transition hidden sm:flex pointer-events-auto'
+          classname = classname + 'w-48 shrink truncate transition hidden sm:flex pointer-events-auto'
+          break;
         case 'actions':
-          return 'basis-12 items-end pointer-events-none'
-      }
-    } else {
-      switch (id){
-        case 'image':
-          return 'basis-12 shrink-0 grow-0'
-        case 'file':
-          return 'basis-12 shrink-0 grow-0'
-        case 'name':
-          return 'w-48 grow shrink-0 truncate'
-        case 'tags':
-          return 'flex-row gap-2 w-24 grow shrink-0'
-        case 'duration':
-          return 'basis-14 shrink-0'
-        case 'category':
-          return 'w-36 shrink truncate transition hidden sm:flex'
-        case 'pack':
-          return 'w-48 shrink truncate transition hidden sm:flex'
-        case 'actions':
-          return 'basis-12 items-end'
+          classname = classname + 'basis-12 items-end pointer-events-none'
+        break;
       }
     }
-    
-    }
+
+    return classname
+  }
   
   function changePage(index = 0) {
     const page = fetch('/samples/api?page=' + index)

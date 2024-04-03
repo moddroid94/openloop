@@ -127,7 +127,10 @@ export const columns: ColumnDef<Sample>[] = [
     header: "",
     cell: props => {
       const data = props.row.original
-
+      const params = new URLSearchParams()
+      params.set('file', data.name)
+      params.set('pack', data.pack.name)
+      params.set('category', data.category)
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -140,12 +143,14 @@ export const columns: ColumnDef<Sample>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               className="hover:bg-gray-300"
-              onClick={() => navigator.clipboard.writeText(data.file.toString())}
+              onClick={() => navigator.clipboard.writeText(data.file)}
             >
               Copy url
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Download Sample</DropdownMenuItem>
+            <DropdownMenuItem >
+              <a href={"/samples/download?" + params.toString()}>Download Sample</a>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
