@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { usePathname, useSearchParams } from "next/navigation"
 import { useRouter } from "next/navigation"
@@ -26,10 +26,12 @@ export function DataTable({
   initialData,
   paginate,
 }) {
+  
   const searchParams = useSearchParams()
-  const [data, setData] = useState(initialData)
+  const [data, setData] = useState(Array)
   const router = useRouter()
   const pathname = usePathname()
+
   const table = useReactTable({
     data,
     columns,
@@ -129,22 +131,34 @@ export function DataTable({
     })
   }
 
-  function OrderBy(id: string) {
+  function getOrderingParams(order: string) {
+    /**
+     * get URLSearchParams of the ordering requested
+     * add '-' to reverse order if param is already present
+     * keeps other params, if present
+     * @param order ordering requested as string
+     * @returns string with params without the leading '?'
+     */
     const params = new URLSearchParams(searchParams.toString())
-    if (params.has('ordering', id)) {
-      id = "-" + id
+    if (params.has('ordering', order)) {
+      order = "-" + order
       
     }
-    params.set('ordering', id)
-    setSorting(id)
+    params.set('ordering', order)
+    return params.toString()
+  }
+
+  function getNewSamplesQuery(params: URLSearchParams) {
+    // fetch samples and updates data state
+    // TODO Handle errors in request
     const page = fetch('/samples/api?' + params.toString())
       .then((res) => res.json())
       .then((data) => {
         setData(data.results)
+        // scroll table to top
         var myDiv = document.getElementById('scrollarea');
         myDiv.scroll({ top: 0, behavior: 'smooth' });
       })
-    return params.toString()
   }
 
   function getHeaderIconClass(id: string) {
@@ -157,6 +171,15 @@ export function DataTable({
     }
   }
 
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    getNewSamplesQuery(params)
+    if (params.has('ordering')) {
+      setSorting(params.get('ordering'))
+    }
+    console.log('changes')
+  }, [searchParams])
+  
   return (
   <div className="flex relative w-full h-full">
     <Table className="flex">
@@ -167,7 +190,7 @@ export function DataTable({
               return (
                 <TableHead className={ "transition flex flex-col self-center px-2 text-white hover:bg-slate-600 hover:shadow-md rounded-md cursor-pointer " + getCellClass(header.id, true) } 
                   key={header.id} 
-                  onClick={() => {router.push(pathname + '?' + OrderBy(header.id))}}>
+                  onClick={() => {router.push(pathname + '?' + getOrderingParams(header.id))}}>
                   <div className="flex my-auto flex-row">
                   {header.isPlaceholder
                     ? null
