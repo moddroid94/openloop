@@ -62,8 +62,9 @@ export const Player = ({ url, title, author, thumbnail}: Props) => {
     };
     
     return (
-        <div className='container pt-32'>
+        <div className='w-full'>
             <ReactHowler
+                preload={false}
                 ref={playerRef}
                 src={url}
                 playing={playing}
@@ -72,8 +73,10 @@ export const Player = ({ url, title, author, thumbnail}: Props) => {
                 loop={loop}
                 onLoad={handleLoad}
                 onEnd={handleEnd}
+                onStop={handlePause}
+                onPause={handlePause}
             />
-            <div className="shadow rounded-xl">
+            <div className="shadow">
             
             <PlayerControls
                 playerRef={playerRef}
@@ -90,7 +93,7 @@ export const Player = ({ url, title, author, thumbnail}: Props) => {
                 handlePause={handlePause}
                 handleVolumeChange={handleVolumeChange}
             />
-      </div>
+            </div>
         </div>
     )
 }

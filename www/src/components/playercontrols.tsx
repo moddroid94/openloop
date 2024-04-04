@@ -40,7 +40,6 @@ export const PlayerControls = ({
 }: Props) => {
     const [played, setPlayed] = useState<number>(0);
     const [seeking, setSeeking] = useState<boolean>(false);
-    const playPauseButtonRef = useRef<HTMLButtonElement>(null);
     const requestId = useRef<number>()
 
     const togglePlayAndPause = () => {
@@ -77,7 +76,12 @@ export const PlayerControls = ({
 
     useEffect(() => {
         if (progress == 1) {
-            setPlayed(0)
+            if (loop == false) {
+                handlePause()
+                setPlayed(0)
+            }
+            
+            
         }
     }, [progress]);
 
@@ -91,9 +95,9 @@ export const PlayerControls = ({
     },[playing, seeking])
 
     return (
-    <div className="bg-gray-50  rounded-b-xl py-10">
-        <div className="bg-gray-50  rounded-b-xl py-10">
-            <div className="mb-8 flex gap-x-10 px-10">
+    <div className="bg-gray-50  rounded-xl py-2">
+        <div className="bg-gray-50 py-4">
+            <div className="mb-4 flex gap-x-10 px-10">
                 {/* duration: time played  */}
                 <div className="text-xs text-gray-600">
                     <Duration seconds={played} />
@@ -110,7 +114,7 @@ export const PlayerControls = ({
                     onMouseDown={handleSeekMouseDown}
                     onChange={handleSeekChange}
                     onMouseUp={handleSeekMouseUp}
-                    className="w-full h-4 rounded-lg appearance-none  bg-slate-400 accent-gray-900 focus:outline focus:outline-cyan-500 "
+                    className="w-full h-4 rounded-lg appearance-none  bg-slate-400 accent-gray-900  "
                     />
                 </div>
                 {/* duration: time left */}
@@ -123,19 +127,16 @@ export const PlayerControls = ({
                 {/* loop button */}
                 <div className="flex justify-center">
                     <button
-                    className={`focus:outline focus:outline-cyan-500 font-bold hover:bg-gray-200 ${
-                        loop && "text-cyan-500"
-                    }`}
+                    className={`font-bold hover:bg-gray-200`}
                     onClick={toggleLoop}
                     >
-                    <ImLoop className="text-black"/>
+                    {loop ? <ImLoop className="text-black"/> : <ImLoop className="text-gray-500"/>}
                     </button>
                 </div>
 
                 {/* play/pause button */}
                 <div className="flex justify-center">
                     <button
-                    ref={playPauseButtonRef}
                     className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
                     onClick={togglePlayAndPause}
                     >
@@ -157,7 +158,7 @@ export const PlayerControls = ({
                     {/* volume slider */}
                     <input
                     type="range"
-                    className="focus:outline focus:outline-cyan-500 w-[50%] h-2 rounded-lg  bg-slate-400 accent-gray-900"
+                    className="w-[50%] h-2 rounded-lg  bg-slate-400 accent-gray-900"
                     min={0}
                     max={1}
                     step={0.1}
