@@ -64,7 +64,6 @@ export const Player = ({ url, title, author, thumbnail}: Props) => {
     return (
         <div className='w-full'>
             <ReactHowler
-                preload={false}
                 ref={playerRef}
                 src={url}
                 playing={playing}

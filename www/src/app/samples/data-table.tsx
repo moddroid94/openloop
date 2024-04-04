@@ -14,30 +14,39 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {Sample, columns} from "./columns"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
-import { IoChevronDown } from "react-icons/io5"
+import { IoChevronDown, IoPlay, IoPlayOutline } from "react-icons/io5"
 
+export type Props = {
+  columns: typeof columns,
+  paginate: any,
+
+  playSong: (id: string) => void
+  onDataUpdate: (data: Array<any>) => void
+}
 
 export function DataTable({
   columns,
-  initialData,
   paginate,
-}) {
+  playSong,
+  onDataUpdate,
+}:Props) {
   
   const searchParams = useSearchParams()
-  const [data, setData] = useState(Array)
+  const [data, setData] = useState(Array<Sample>)
   const router = useRouter()
   const pathname = usePathname()
 
-  const table = useReactTable({
+  const table = useReactTable<Sample>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
     manualSorting: true,
-    rowCount: paginate.count,
+    //rowCount: paginate.count,
     autoResetPageIndex: false,
   })
 
@@ -124,6 +133,7 @@ export function DataTable({
     .then((data) => {
       state.pagination.pageIndex = index - 1 // offset index becuase table starts index at 0 but api at 1
       setData(data.results)
+      onDataUpdate(data)
       var myDiv = document.getElementById('scrollarea');
       myDiv.scroll({ top: 0, behavior: 'smooth' });
       
@@ -154,6 +164,7 @@ export function DataTable({
       .then((res) => res.json())
       .then((data) => {
         setData(data.results)
+        onDataUpdate(data)
         // scroll table to top
         var myDiv = document.getElementById('scrollarea');
         myDiv.scroll({ top: 0, behavior: 'smooth' });
@@ -169,6 +180,10 @@ export function DataTable({
       return "hidden"
     }
   }
+  
+  function clickPlay(id: string) {
+    playSong(id)
+  }
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString())
@@ -176,7 +191,6 @@ export function DataTable({
     if (params.has('ordering')) {
       setSorting(params.get('ordering'))
     }
-    console.log('changes')
   }, [searchParams])
   
   return (
@@ -216,7 +230,17 @@ export function DataTable({
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id} className={ "p-2 flex flex-col " + getCellClass(cell.column.id, false) }>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  { cell.column.id == 'file' 
+                  ? (
+                    <button className="relative group transition flex size-7 rounded-full p-1 hover:ring-1 hover:ring-black" onClick={() => clickPlay(row.id)}>
+                      <IoPlayOutline className="transition absolute top-0 left-0 m-1 translate-x-[1px] size-5 scale-90 group-hover:opacity-0"/>
+                      <IoPlay className="transition absolute top-0 left-0 m-1 translate-x-[1px] scale-0 size-5 group-hover:scale-100"/>
+                    </button>
+                    )
+                  : flexRender(cell.column.columnDef.cell, cell.getContext())
+                  }
+                  
+                  
                 </TableCell>
               ))}
             </TableRow>
