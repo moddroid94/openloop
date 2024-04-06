@@ -5,6 +5,8 @@
 This Project is made as a necessity for me and my friends, we love to share samples, stems and loops and we've always struggled with organizing our libraries,
 so this is a attempt to solve both of the problems by making a nice Splice inspired UI to allow us to upload/download and manage samples.
 
+![alt text](image.png)
+
 ### The main goal of this project is to allow us to share and access our library whenever we are, without worring about carrying HDD's or to have to fiddle with remote storages every single time.
 
 This is developed to be a self-hosted solution so the main setup would be behind a cloudflare zero-trust network, and given access to a restrict number of people, is not intended to be a SaaS or public in any means,
