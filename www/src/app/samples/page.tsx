@@ -3,7 +3,7 @@
 import { Player, AudioFile } from "@/components/player"
 import { Sample, columns } from "./columns"
 import { DataTable } from "./data-table"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, Suspense, useState } from "react"
 
 export type ApiPage = {
   count: number;
@@ -18,7 +18,7 @@ export default function Samples() {
   const [audio, setAudio] = useState<AudioFile>()
 
   function getData() {
-    const page = fetch('http://127.0.0.1:3000/samples/api')
+    const page = fetch('/samples/api')
     .then((res) => res.json())
     .then((data) => {setData(data)})
   }
@@ -61,12 +61,14 @@ export default function Samples() {
   return (
     <>
     <div className={"flex transition pt-16 overflow-hidden w-full h-screen " + (audio ? "pb-48" : "")}>
-      <DataTable 
-        columns={columns}
-        paginate={data}
-        playSong={playSong}
-        onDataUpdate={updateData}
-      />
+      <Suspense>
+        <DataTable 
+          columns={columns}
+          paginate={data}
+          playSong={playSong}
+          onDataUpdate={updateData}
+        />
+      </Suspense>
     </div>
     <div className={"transition fixed bottom-0 sm:w-4/5 w-full p-2 " + (audio ? "" : "translate-y-48")}>
       {audio 

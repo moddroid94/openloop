@@ -196,65 +196,67 @@ export function DataTable({
   
   return (
   <div className="flex relative w-full h-full">
-    <Table className="flex">
-      <TableHeader className="transition-all flex fixed right-0 top-16 z-10 rounded-md w-full sm:w-4/5 p-2 ">
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow className="transition-all flex flex-row items-mide justify-start w-full border bg-slate-500 hover:bg-slate-500 border-black rounded-md shadow-lg overflow-clip pointer-events-none" key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              return (
-                <TableHead className={ "transition flex flex-col self-center px-2 text-white hover:bg-slate-600 hover:shadow-md rounded-md cursor-pointer " + getCellClass(header.id, true) } 
-                  key={header.id} 
-                  onClick={() => {router.push(pathname + '?' + getOrderingParams(header.id))}}>
-                  <div className="flex my-auto flex-row">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                  <IoChevronDown className={"size-4 self-end ml-1 mb-[1px] " + getHeaderIconClass(header.id)}/>
-                  </div>
-                </TableHead>
-              )
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody id="scrollarea" className="flex flex-col z-0 w-full h-screen pt-16 overflow-auto px-2">
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              tabIndex={0}
-              className="flex flex-row h-11 items-center"
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} className={ "p-2 flex flex-col " + getCellClass(cell.column.id, false) }>
-                  { cell.column.id == 'file' 
-                  ? (
-                    <button className="relative group transition flex size-7 rounded-full p-1 hover:ring-1 hover:ring-black" onClick={() => clickPlay(row.id)}>
-                      <IoPlayOutline className="transition absolute top-0 left-0 m-1 translate-x-[1px] size-5 scale-90 group-hover:opacity-0"/>
-                      <IoPlay className="transition absolute top-0 left-0 m-1 translate-x-[1px] scale-0 size-5 group-hover:scale-100"/>
-                    </button>
-                    )
-                  : flexRender(cell.column.columnDef.cell, cell.getContext())
-                  }
-                  
-                  
-                </TableCell>
-              ))}
+
+      <Table className="flex">
+        <TableHeader className="transition-all flex fixed right-0 top-16 z-10 rounded-md w-full sm:w-4/5 p-2 ">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow className="transition-all flex flex-row items-mide justify-start w-full border bg-slate-500 hover:bg-slate-500 border-black rounded-md shadow-lg overflow-clip pointer-events-none" key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead className={ "transition flex flex-col self-center px-2 text-white hover:bg-slate-600 hover:shadow-md rounded-md cursor-pointer " + getCellClass(header.id, true) } 
+                    key={header.id} 
+                    onClick={() => {router.push(pathname + '?' + getOrderingParams(header.id))}}>
+                    <div className="flex my-auto flex-row">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    <IoChevronDown className={"size-4 self-end ml-1 mb-[1px] " + getHeaderIconClass(header.id)}/>
+                    </div>
+                  </TableHead>
+                )
+              })}
             </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          ))}
+        </TableHeader>
+        <TableBody id="scrollarea" className="flex flex-col z-0 w-full h-screen pt-16 overflow-auto px-2">
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                tabIndex={0}
+                className="flex flex-row h-11 items-center"
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className={ "p-2 flex flex-col " + getCellClass(cell.column.id, false) }>
+                    { cell.column.id == 'file' 
+                    ? (
+                      <button className="relative group transition flex size-7 rounded-full p-1 hover:ring-1 hover:ring-black" onClick={() => clickPlay(row.id)}>
+                        <IoPlayOutline className="transition absolute top-0 left-0 m-1 translate-x-[1px] size-5 scale-90 group-hover:opacity-0"/>
+                        <IoPlay className="transition absolute top-0 left-0 m-1 translate-x-[1px] scale-0 size-5 group-hover:scale-100"/>
+                      </button>
+                      )
+                    : flexRender(cell.column.columnDef.cell, cell.getContext())
+                    }
+                    
+                    
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+
     <div className="transition absolute bottom-0 right-0 items-center justify-start space-x-2 py-4 pr-10">
       <Button
         variant="outline"

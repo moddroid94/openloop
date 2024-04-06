@@ -10,6 +10,8 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet, CharFi
 
 # Create your views here.
 logger = Logger("default")
+
+
 class SampleModelFilter(FilterSet):
     class Meta:
         model = Sample
@@ -25,10 +27,12 @@ class SampleModelFilter(FilterSet):
             },
         }
 
+
 class StandardResultsSetPagination(pagination.PageNumberPagination):
     page_size = 25
     page_size_query_param = 'page_size'
     max_page_size = 100
+
 
 class SampleLibraryList(generics.ListAPIView):
     categories = Sample.categories
@@ -40,5 +44,6 @@ class SampleLibraryList(generics.ListAPIView):
     filterset_class = SampleModelFilter
     search_fields = ['name']
     ordering_fields = ['name', 'category', 'pack__type', 'duration']
+
     def get_queryset(self):
         return Sample.objects.all()

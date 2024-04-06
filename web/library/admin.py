@@ -26,14 +26,13 @@ class PackAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
         jtags = set()
         for i in request.POST["tags"].split(","):
-            jtags.add(str(i).replace(" ",""))
+            jtags.add(str(i).replace(" ", ""))
         for v, n in Sample.categories.choices:
             files = request.FILES.getlist(n.lower())
             for f in files:
                 instance = Sample(file=f, pack=obj, category=v)
                 instance.save()
-                instance.tags.set(tags= jtags)
-                
+                instance.tags.set(tags=jtags)
 
 
 @admin.register(Sample)

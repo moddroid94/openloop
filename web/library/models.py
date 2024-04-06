@@ -11,7 +11,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
 def get_save_path(instance, filename):
     return 'uploads/{0}/Sounds/{1}/{2}'.format(instance.pack, instance.category, filename)
 
@@ -26,7 +25,7 @@ class Pack(models.Model):
         PRODKIT = "PK", _("Prod. Kit")
         DRUMKIT = "DK", _("Drum Kit")
 
-    type = models.CharField(max_length=3, choices=packs) # type: ignore
+    type = models.CharField(max_length=3, choices=packs)  # type: ignore
     name = models.CharField(max_length=100, unique=True)
     author = models.CharField(max_length=100)
     cover = models.ImageField(upload_to=get_img_save_path)
@@ -44,10 +43,9 @@ class Sample(models.Model):
         SFXS = "sfxs", _("Sfxs")
         AMBIENCES = "ambiences", _("Ambiences")
 
-
     # fields
     pack = models.ForeignKey(Pack, on_delete=models.CASCADE, related_name="samples", to_field="name")
-    category = models.CharField(max_length=20, choices=categories) # type: ignore
+    category = models.CharField(max_length=20, choices=categories)  # type: ignore
     file = models.FileField(upload_to=get_save_path)
 
     # composite values
@@ -86,4 +84,3 @@ def set_composite_values(sender, instance, **kwargs):
             audio_info = mutagen.File(instance.file)
             logger.warning(audio_info.info.length)
             instance.duration = round(audio_info.info.length)
-    

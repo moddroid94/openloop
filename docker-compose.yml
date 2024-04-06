@@ -21,6 +21,16 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.prod.db
+  www:
+    build:
+      context: ./www
+      dockerfile: Dockerfile
+    volumes:
+      - node_modules:/app/www/node_modules
+    expose:
+      - 3000
+    depends_on:
+      - web
   nginx:
     build: ./nginx
     volumes:
@@ -30,6 +40,8 @@ services:
       - 1337:80
     depends_on:
       - web
+      - www
 volumes:
+  node_modules:
   postgres_data:
   static_volume:
