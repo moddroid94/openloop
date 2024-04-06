@@ -8,11 +8,11 @@ services:
     command: gunicorn openloop.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/staticfiles
-      - /home/vboxuser/Documents/data:/home/app/web/mediafiles
+      - media_volume:/home/app/web/mediafiles
     expose:
       - 8000
     env_file:
-      - ./.env.prod
+      - stack.env
     depends_on:
       - db
   db:
@@ -20,7 +20,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env.prod.db
+      - stack.env
   www:
     build:
       context: ./www
@@ -35,13 +35,14 @@ services:
     build: ./nginx
     volumes:
       - static_volume:/home/app/web/staticfiles
-      - /home/vboxuser/Documents/data:/home/app/web/mediafiles
+      - media_volume:/home/app/web/mediafiles
     ports:
       - 1337:80
     depends_on:
       - web
       - www
 volumes:
+  media_volume:
   node_modules:
   postgres_data:
   static_volume:
