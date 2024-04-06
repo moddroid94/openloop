@@ -1,6 +1,6 @@
 'use client'
 
-import { Player } from "@/components/player"
+import { Player, AudioFile } from "@/components/player"
 import { Sample, columns } from "./columns"
 import { DataTable } from "./data-table"
 import { useEffect, useMemo, useState } from "react"
@@ -12,12 +12,6 @@ export type ApiPage = {
   results: Array<Sample>;
 }
 
-export type AudioFile = {
-  title: string;
-  url: string;
-  author: string;
-  thumbnail: string;
-}
 
 export default function Samples() {
   const [data, setData] = useState<ApiPage>()
@@ -29,21 +23,35 @@ export default function Samples() {
     .then((data) => {setData(data)})
   }
 
-  const playSong = (id:string) => {
-    console.log(data.results[id].file)
+  const playSong = (id:number) => {
     const file = data.results[id]
     const audiofile: AudioFile = {
+      id: id,
       title: file.name,
       url: file.file,
       author: file.pack.name,
-      thumbnail: file.pack.cover
+      thumbnail: file.pack.cover,
     }
     setAudio(audiofile)
   }
 
-  const updateData = (data) => {
-    console.log(data)
+  const updateData = (data: ApiPage) => {
     setData(data)
+  }
+
+  const skipForward = () => {
+    if (audio.id + 1 < data.results.length) {
+      playSong(audio.id + 1)
+    } else {
+      console.log('end of array')
+    }
+  }
+  const skipBackward = () => {
+    if (audio.id > 0) {
+      playSong(audio.id - 1)
+    } else {
+      console.log('start of array')
+    }
   }
 
   useEffect(() => {
@@ -52,7 +60,7 @@ export default function Samples() {
   
   return (
     <>
-    <div className={"flex transition pt-16 overflow-hidden w-full h-screen " + (audio ? "pb-36" : "")}>
+    <div className={"flex transition pt-16 overflow-hidden w-full h-screen " + (audio ? "pb-48" : "")}>
       <DataTable 
         columns={columns}
         paginate={data}
@@ -61,12 +69,16 @@ export default function Samples() {
       />
     </div>
     <div className={"transition fixed bottom-0 sm:w-4/5 w-full p-2 " + (audio ? "" : "translate-y-48")}>
-      <Player
-        title={audio?.title}
-        url={audio ? audio.url : "und"}
-        author={audio?.author}
-        thumbnail={audio?.thumbnail}
-      />
+      {audio 
+        ? (
+          <Player
+            audio={audio}
+            onFwd={skipForward}
+            onBwd={skipBackward}
+          />
+          )
+        : <></>
+      }
     </div>
     </>
     

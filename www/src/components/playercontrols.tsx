@@ -1,15 +1,19 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Duration } from "@/components/durations";
 
 import { CiPlay1, CiPause1 } from "react-icons/ci";
 import { VscMute, VscUnmute } from "react-icons/vsc";
 import { ImLoop } from "react-icons/im";
+import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
+import { AudioFile } from "./player";
+import { capitalizeStr } from '@/lib/utils';
 
 
 type Props = {
   playerRef: any;
+  audio: AudioFile
   playing: boolean;
   loop: boolean;
   volume: number;
@@ -22,10 +26,12 @@ type Props = {
   toggleLoop: () => void;
   handlePause: () => void;
   handleVolumeChange: (newVolume: number) => void;
+  handleSkip: (direction: string) => void
 };
 
 export const PlayerControls = ({
     playerRef,
+    audio,
     loop,
     playing,
     volume,
@@ -37,6 +43,7 @@ export const PlayerControls = ({
     handlePause,
     handleVolumeChange,
     toggleMute,
+    handleSkip,
 }: Props) => {
     const [played, setPlayed] = useState<number>(0);
     const [seeking, setSeeking] = useState<boolean>(false);
@@ -74,6 +81,13 @@ export const PlayerControls = ({
         handleVolumeChange(Number(e.target.value));
     };
 
+    const skipFwd = () => {
+        handleSkip('fwd')
+    }
+    const skipBwd = () => {
+        handleSkip('bwd')
+    }
+
     useEffect(() => {
         if (progress == 1) {
             if (loop == false) {
@@ -98,11 +112,17 @@ export const PlayerControls = ({
     <div className="bg-gray-50  rounded-xl py-2">
         <div className="bg-gray-50 py-4">
             <div className="mb-4 flex gap-x-10 px-10">
+                
+                <div className="font-bold text-black mx-auto">
+                <img className="absolute -translate-x-12 -translate-y-[5.5px] size-9 rounded-full" src={audio?.thumbnail}></img>
+                    {capitalizeStr(audio? audio.title : 'None')}
+                </div>
+            </div>
+            <div className="mb-4 flex gap-x-10 px-10">
                 {/* duration: time played  */}
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-gray-600 my-auto">
                     <Duration seconds={played} />
                 </div>
-
                 {/* progress bar */}
                 <div className="flex-1 mx-auto">
                     <input
@@ -114,15 +134,14 @@ export const PlayerControls = ({
                     onMouseDown={handleSeekMouseDown}
                     onChange={handleSeekChange}
                     onMouseUp={handleSeekMouseUp}
-                    className="w-full h-4 rounded-lg appearance-none  bg-slate-400 accent-gray-900  "
+                    className="w-full h-2 rounded-lg appearance-none  bg-slate-400 accent-gray-900  "
                     />
                 </div>
                 {/* duration: time left */}
-                <div className="text-xs text-gray-600 flex">
+                <div className="text-xs text-gray-600 my-auto">
                     <Duration seconds={duration} />
                 </div>
             </div>
-
             <div className="grid grid-cols-3 items-center ">
                 {/* loop button */}
                 <div className="flex justify-center">
@@ -132,18 +151,29 @@ export const PlayerControls = ({
                     >
                     {loop ? <ImLoop className="text-black"/> : <ImLoop className="text-gray-500"/>}
                     </button>
+                    
                 </div>
-
                 {/* play/pause button */}
-                <div className="flex justify-center">
+                <div className="flex justify-center gap-2">
+                    <button
+                    className={`p-4 font-bold hover:bg-gray-200`}
+                    onClick={skipBwd}
+                    >
+                    <IoPlaySkipBack className="text-black"/>
+                    </button>
                     <button
                     className="focus:outline focus:outline-cyan-500 border border-cyan-500 rounded-md p-4 hover:bg-gray-200"
                     onClick={togglePlayAndPause}
                     >
                     {playing ? <CiPause1 className="text-black"/> : <CiPlay1 className="text-black"/>}
                     </button>
+                    <button
+                    className={`p-4 font-bold hover:bg-gray-200`}
+                    onClick={skipFwd}
+                    >
+                    <IoPlaySkipForward className="text-black"/>
+                    </button>
                 </div>
-
                 {/* volume control */}
                 <div className="flex justify-center items-center gap-1">
 

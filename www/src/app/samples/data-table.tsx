@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { ApiPage } from "./page"
 import {Sample, columns} from "./columns"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
@@ -21,11 +22,11 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation"
 import { IoChevronDown, IoPlay, IoPlayOutline } from "react-icons/io5"
 
 export type Props = {
-  columns: typeof columns,
-  paginate: any,
+  columns: typeof columns;
+  paginate: any;
 
-  playSong: (id: string) => void
-  onDataUpdate: (data: Array<any>) => void
+  playSong: (id: number) => void;
+  onDataUpdate: (data: ApiPage) => void;
 }
 
 export function DataTable({
@@ -66,7 +67,7 @@ export function DataTable({
      * id: name of the header
      */
     var classname = ''
-    // add dimension and flex properties to all
+    // add dimension and flex properties to all cols
     switch (id){
       case 'image':
         classname = 'basis-12 shrink-0 grow-0'
@@ -78,7 +79,7 @@ export function DataTable({
         classname = 'w-48 grow shrink-0 truncate'
         break;
       case 'tags':
-        classname = 'flex-row gap-2 w-24 grow shrink-0'
+        classname = 'flex-row gap-2 w-24 grow'
         break;
       case 'duration':
         classname = 'basis-[70px] shrink-0'
@@ -87,7 +88,7 @@ export function DataTable({
         classname = 'w-36 shrink truncate transition hidden sm:flex'
         break;
       case 'pack':
-        classname = 'w-48 shrink truncate transition hidden sm:flex'
+        classname = 'w-48 shrink truncate transition hidden sm:flex grow'
         break;
       case 'actions':
         classname = 'basis-12 items-end'
@@ -98,28 +99,28 @@ export function DataTable({
     if (isheader == true) {
       switch (id){
         case 'image':
-          classname = classname + 'basis-12 shrink-0 grow-0 pointer-events-none'
+          classname = classname + ' pointer-events-none'
           break;
         case 'file':
-          classname = classname + 'basis-12 shrink-0 grow-0 pointer-events-none'
+          classname = classname + ' pointer-events-none'
           break;
         case 'name':
-          classname = classname + 'w-48 grow shrink-0 truncate pointer-events-auto'
+          classname = classname + ' pointer-events-auto'
           break;
         case 'tags':
-          classname = classname + 'flex-row gap-2 w-24 grow shrink-0 pointer-events-auto'
+          classname = classname + ' pointer-events-auto'
           break;
         case 'duration':
-          classname = classname + 'basis-14 shrink-0 pointer-events-auto'
+          classname = classname + ' pointer-events-auto'
           break;
         case 'category':
-          classname = classname + 'w-36 shrink truncate transition hidden sm:flex pointer-events-auto'
+          classname = classname + ' pointer-events-auto'
           break;
         case 'pack':
-          classname = classname + 'w-48 shrink truncate transition hidden sm:flex pointer-events-auto'
+          classname = classname + ' pointer-events-auto'
           break;
         case 'actions':
-          classname = classname + 'basis-12 items-end pointer-events-none'
+          classname = classname + ' pointer-events-none'
         break;
       }
     }
@@ -182,7 +183,7 @@ export function DataTable({
   }
   
   function clickPlay(id: string) {
-    playSong(id)
+    playSong(parseInt(id))
   }
 
   useEffect(() => {
@@ -254,23 +255,23 @@ export function DataTable({
         )}
       </TableBody>
     </Table>
-    <div className="absolute bottom-0 right-0 items-center justify-start space-x-2 py-4 pr-10">
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => changePage((table.initialState.pagination.pageIndex + 1) - 1)}
-      disabled={!table.getCanPreviousPage()}
-    >
-      Previous
-    </Button>
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => changePage((table.initialState.pagination.pageIndex + 1) + 1)}
-      disabled={!table.getCanNextPage()}
-    >
-      Next
-    </Button>
+    <div className="transition absolute bottom-0 right-0 items-center justify-start space-x-2 py-4 pr-10">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => changePage((table.initialState.pagination.pageIndex + 1) - 1)}
+        disabled={!table.getCanPreviousPage()}
+      >
+        Previous
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => changePage((table.initialState.pagination.pageIndex + 1) + 1)}
+        disabled={!table.getCanNextPage()}
+      >
+        Next
+      </Button>
     </div>
   </div>
   )

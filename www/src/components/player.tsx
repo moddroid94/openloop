@@ -7,19 +7,31 @@ import { useEffect, useRef, useState } from 'react'
 
 import { PlayerControls } from "@/components/playercontrols";
 
+type AudioProps = {
+    audio: AudioFile;
 
+    onFwd: () => void;
+    onBwd: () => void;
+    //onLike: () => void; //TO BE IMPLEMENTED
+}
 
-type Props = {
+export type AudioFile = {
+    id: number;
     url: string;
     title: string;
     author: string;
     thumbnail: string;
 }
-export const Player = ({ url, title, author, thumbnail}: Props) => {
+export const Player = ({
+    audio,
+
+    onFwd,
+    onBwd,
+}: AudioProps) => {
     const playerRef = useRef<ReactHowler | null>(null);
     
 
-    const [playing, setPlaying] = useState<boolean>(false);
+    const [playing, setPlaying] = useState<boolean>(true);
     const [muted, setMuted] = useState<boolean>(false);
     const [volume, setVolume] = useState<number>(0.5);
     const [progress, setProgress] = useState<number>(0); // 0 for playing - 1 for ended, which triggers progressbar reset
@@ -61,11 +73,23 @@ export const Player = ({ url, title, author, thumbnail}: Props) => {
         setLoop((prevLoop) => !prevLoop);
     };
     
+    const handleSkipTrack = (direction: string) => {
+        if (direction == 'fwd') {
+            onFwd()
+        } else {
+            onBwd()
+        }
+        
+    };
+
+    useEffect(() => {
+        handlePlay()
+    }, [audio])
     return (
         <div className='w-full'>
             <ReactHowler
                 ref={playerRef}
-                src={url}
+                src={audio? audio.url : 'none'}
                 playing={playing}
                 volume={volume}
                 mute={muted}
@@ -79,6 +103,7 @@ export const Player = ({ url, title, author, thumbnail}: Props) => {
             
             <PlayerControls
                 playerRef={playerRef}
+                audio={audio? audio : null}
                 playing={playing}
                 volume={volume}
                 muted={muted}
@@ -91,6 +116,7 @@ export const Player = ({ url, title, author, thumbnail}: Props) => {
                 toggleLoop={toggleLoop}
                 handlePause={handlePause}
                 handleVolumeChange={handleVolumeChange}
+                handleSkip={handleSkipTrack}
             />
             </div>
         </div>
