@@ -74,7 +74,7 @@ class Sample(models.Model):
 def set_composite_values(sender, instance, **kwargs):
     try:
         obj = sender.objects.get(pk=instance.pk)
-    except sender.DoesNotExists:
+    except sender.DoesNotExist:
         instance.name = Path(instance.file.url).name
         audio_info = mutagen.File(instance.file)
         instance.duration = round(audio_info.info.length)
