@@ -5,6 +5,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
+    pull_policy: build
     command: gunicorn openloop.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/staticfiles
@@ -25,6 +26,7 @@ services:
     build:
       context: ./www
       dockerfile: Dockerfile
+    pull_policy: build
     volumes:
       - node_modules:/app/www/node_modules
     expose:
@@ -33,6 +35,7 @@ services:
       - web
   nginx:
     build: ./nginx
+    pull_policy: build
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
