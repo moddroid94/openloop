@@ -9,7 +9,7 @@ import {  type NextRequest } from 'next/server'
 
     // external file URL
     const BUILT_URL =
-      "http://127.0.0.1:8000/media/uploads/" + pack + "/Sounds/" + category + '/' + filename;
+      "http://web:8000/media/uploads/" + pack + "/Sounds/" + category + '/' + filename;
   
     // use fetch to get a response
     const response = await fetch(BUILT_URL)
