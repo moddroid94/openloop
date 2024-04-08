@@ -60,7 +60,7 @@ export const columns: ColumnDef<Sample>[] = [
           <img
            className="absolute top-0 z-0 rounded-full transition size-8 group-hover:scale-70"
             alt="cover"
-            src={ image }
+            src={ coverfix }
             width={32}
             height={32}
           />
