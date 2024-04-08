@@ -56,7 +56,7 @@ export const columns: ColumnDef<Sample>[] = [
       return (
         <button className="transition relative group flex py-0 px-0 rounded-full size-8 overflow-clip hover:shadow-sm hover:ring-1 hover:ring-black">
           <IoAddOutline className="absolute top-0 z-10 transition rounded-full scale-0 size-8 group-hover:scale-100 text-black bg-slate-50" />
-          <Image
+          <img
            className="absolute top-0 z-0 rounded-full transition size-8 group-hover:scale-70"
             alt="cover"
             src={ image }

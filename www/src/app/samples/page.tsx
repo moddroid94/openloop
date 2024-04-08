@@ -25,16 +25,17 @@ export default function Samples() {
 
   const playSong = (id:number) => {
     const file = data.results[id]
-    //We need to rebuild the url because the one from the api uses web:8000 as domain, which don't work as the request is made from the frontend
+    //We need to rebuild the urls because the ones from the api uses web:8000 as domain, which don't work as the request is made from the frontend
     //there's surely a better way of doing this, maybe from the storage model in django or the api, idk
     //this is bad, i know.
-    const urlfix = "http://192.168.1.102:1337/media/uploads/" + file.pack.name + "/Sounds/" + file.category + "/" + file.name
+    const urlfix = "http://192.168.1.102:1337/media/uploads/" + file.pack.name + "/Sounds/" + file.category + "/" + file.file.split('/').pop()
+    const coverfix = "http://192.168.1.102:1337/media/uploads/" + file.pack.name + "/Artworks/" + file.pack.cover.split('/').pop()
     const audiofile: AudioFile = {
       id: id,
       title: file.name,
       url: urlfix,
       author: file.pack.name,
-      thumbnail: file.pack.cover,
+      thumbnail: coverfix,
     }
     setAudio(audiofile)
   }
