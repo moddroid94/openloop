@@ -75,12 +75,12 @@ def set_composite_values(sender, instance, **kwargs):
     try:
         obj = sender.objects.get(pk=instance.pk)
     except sender.DoesNotExist:
-        instance.name = Path(instance.file.url).name
+        instance.name = Path(instance.file.url).name.replace("%20", "_")
         audio_info = mutagen.File(instance.file)
         instance.duration = round(audio_info.info.length)
     else:
         if not obj.file == instance.file:
-            instance.name = Path(instance.file.url).name
+            instance.name = Path(instance.file.url).name.replace("%20", "_")
             audio_info = mutagen.File(instance.file)
             logger.warning(audio_info.info.length)
             instance.duration = round(audio_info.info.length)
