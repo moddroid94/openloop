@@ -52,6 +52,7 @@ export const columns: ColumnDef<Sample>[] = [
     header: "",
     cell: props => {
       const image= props.row.original.pack.cover
+      const coverfix = "http://192.168.1.102:1337/media/uploads/" + props.row.original.pack.name + "/Artworks/" + image.split('/').pop()
 
       return (
         <button className="transition relative group flex py-0 px-0 rounded-full size-8 overflow-clip hover:shadow-sm hover:ring-1 hover:ring-black">
